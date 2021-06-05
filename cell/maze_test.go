@@ -44,7 +44,7 @@ func TestCellDivBasicProps(t *testing.T) {
 		{11, 111},
 	}
 	for _, dim := range tc {
-		t.Run(fmt.Sprintf("Dim(%v)", dim), func (t *testing.T) {
+		t.Run(fmt.Sprintf("Dim(%v)", dim), func(t *testing.T) {
 			cell := NewDividedCell(dim.Width, dim.Height)
 			testBasicCellProps(t, cell)
 			testLeafCellsArea(t, cell)
@@ -66,8 +66,8 @@ func testBasicCellProps(t *testing.T, main Cell) {
 			rel := sub.RelativePos
 			assert.True(t, rel.X >= 0)
 			assert.True(t, rel.Y >= 0)
-			assert.True(t, rel.X + sub.Cell.Dim.Width <= cell.Dim.Width)
-			assert.True(t, rel.Y + sub.Cell.Dim.Height <= cell.Dim.Height)
+			assert.True(t, rel.X+sub.Cell.Dim.Width <= cell.Dim.Width)
+			assert.True(t, rel.Y+sub.Cell.Dim.Height <= cell.Dim.Height)
 		}
 	}
 }

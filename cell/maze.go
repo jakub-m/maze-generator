@@ -83,5 +83,5 @@ func randomSplitType() splitType {
 }
 
 func randomSplitDim(width int) int {
-	return 1 + rand.Intn(width - 1)
+	return 1 + rand.Intn(width-1)
 }
