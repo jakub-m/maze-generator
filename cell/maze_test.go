@@ -1,4 +1,4 @@
-package maze
+package cell
 
 import (
 	"fmt"
@@ -12,13 +12,6 @@ func TestMain(m *testing.M) {
 	rand.Seed(0)
 	os.Exit(m.Run())
 }
-
-//func TestPrint(t *testing.T) {
-//	c := NewDividedCell(12, 12)
-//	json, err := json.MarshalIndent(c, "", " ")
-//	assert.NoError(t, err)
-//	fmt.Print(string(json) + "\n")
-//}
 
 func TestSmallCell(t *testing.T) {
 	ch := NewDividedCell(2, 1)

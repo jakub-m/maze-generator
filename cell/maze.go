@@ -1,4 +1,4 @@
-package maze
+package cell
 
 import "math/rand"
 
