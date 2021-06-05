@@ -1,7 +1,6 @@
 package maze
 
 import (
-	"encoding/json"
 	"fmt"
 	"github.com/stretchr/testify/assert"
 	"math/rand"
@@ -13,6 +12,13 @@ func TestMain(m *testing.M) {
 	rand.Seed(0)
 	os.Exit(m.Run())
 }
+
+//func TestPrint(t *testing.T) {
+//	c := NewDividedCell(12, 12)
+//	json, err := json.MarshalIndent(c, "", " ")
+//	assert.NoError(t, err)
+//	fmt.Print(string(json) + "\n")
+//}
 
 func TestSmallCell(t *testing.T) {
 	ch := NewDividedCell(2, 1)
@@ -44,13 +50,16 @@ func TestCellDivBasicProps(t *testing.T) {
 		{111, 11},
 		{11, 111},
 	}
-	for _, tc := range tc {
-		t.Run(fmt.Sprintf("Dim(%v)", tc), func (t *testing.T) {testBasicCellProps(t, tc)})
+	for _, dim := range tc {
+		t.Run(fmt.Sprintf("Dim(%v)", dim), func (t *testing.T) {
+			cell := NewDividedCell(dim.Width, dim.Height)
+			testBasicCellProps(t, cell)
+			testLeafCellsArea(t, cell)
+		})
 	}
 }
 
-func testBasicCellProps(t *testing.T, dim Dim) {
-	main := NewDividedCell(dim.Width, dim.Height)
+func testBasicCellProps(t *testing.T, main Cell) {
 	cells := []Cell{main}
 	for {
 		if len(cells) == 0 {
@@ -70,9 +79,24 @@ func testBasicCellProps(t *testing.T, dim Dim) {
 	}
 }
 
-func TestPrint(t *testing.T) {
-	c := NewDividedCell(12, 12)
-	json, err := json.MarshalIndent(c, "", " ")
-	assert.NoError(t, err)
-	fmt.Print(string(json) + "\n")
+func testLeafCellsArea(t *testing.T, main Cell) {
+	leafs := collectLeafCells(main)
+	leafArea := 0
+	for _, leaf := range leafs {
+		leafArea += leaf.Dim.Height * leaf.Dim.Width
+	}
+	mainArea := main.Dim.Height * main.Dim.Width
+	assert.Equal(t, mainArea, leafArea)
+}
+
+func collectLeafCells(c Cell) []Cell {
+	if len(c.Subcells) == 0 {
+		return []Cell{c}
+	} else {
+		leafs := []Cell{}
+		for _, sub := range c.Subcells {
+			leafs = append(leafs, collectLeafCells(sub.Cell)...)
+		}
+		return leafs
+	}
 }
