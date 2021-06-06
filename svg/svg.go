@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"maze/cell"
+	"maze/maze"
 )
 
 const newLine = "\n"
@@ -11,18 +12,18 @@ const newLine = "\n"
 const svgHeader = `<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">`
 
-func Format(c cell.Cell, scale, strokeWidth int) ([]byte, error) {
+func FormatMaze(m maze.Maze, scale, strokeWidth int) ([]byte, error) {
 	var buf bytes.Buffer
 	_, err := buf.WriteString(svgHeader + newLine)
 	if err != nil {
 		return nil, err
 	}
-	openTag := fmt.Sprintf(`<svg width="%d" height="%d" xmlns="http://www.w3.org/2000/svg">`, c.Dim.Width*scale, c.Dim.Height*scale)
+	openTag := fmt.Sprintf(`<svg width="%d" height="%d" xmlns="http://www.w3.org/2000/svg">`, m.Width*scale, m.Height*scale)
 	_, err = buf.WriteString(openTag + newLine)
 	if err != nil {
 		return nil, err
 	}
-	formatWalls(c, scale, strokeWidth, &buf)
+	formatWalls(m.RootCell, scale, strokeWidth, &buf)
 	_, err = buf.WriteString(`</svg>`)
 	if err != nil {
 		return nil, err

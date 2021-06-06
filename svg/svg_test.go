@@ -3,7 +3,7 @@ package svg_test
 import (
 	"github.com/stretchr/testify/assert"
 	"math/rand"
-	"maze/cell"
+	"maze/maze"
 	"maze/svg"
 	"os"
 	"testing"
@@ -15,8 +15,8 @@ func TestMain(m *testing.M) {
 }
 
 func TestSvg(t *testing.T) {
-	c := cell.NewDividedCell(4, 4)
-	f, err := svg.Format(c, 50, 2)
+	m := maze.NewMaze(4)
+	f, err := svg.FormatMaze(m, 50, 2)
 	assert.NoError(t, err)
 	s := string(f)
 	assert.Contains(t, s, "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>")

@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"log"
 	"math/rand"
-	"maze/cell"
+	"maze/maze"
 	"maze/svg"
 	"os"
 	"time"
@@ -47,8 +47,8 @@ func main() {
 	log.Println("stroke", strokeWidth)
 	log.Println("out", outfname)
 	rand.Seed(seed)
-	c := cell.NewDividedCell(size, size)
-	f, err := svg.Format(c, scale, strokeWidth)
+	m := maze.NewMaze(size)
+	f, err := svg.FormatMaze(m, scale, strokeWidth)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
