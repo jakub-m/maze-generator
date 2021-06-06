@@ -20,7 +20,7 @@ func internalWallsRec(absOrigin Pos, c Cell) []Wall {
 				// consider only top wall
 				w := topWall(absOrigin, sub)
 				walls = append(walls, w)
-			} else if isSplitVer(sub){
+			} else if isSplitVer(sub) {
 				w := leftWall(absOrigin, sub)
 				walls = append(walls, w)
 			} else {
@@ -49,8 +49,8 @@ func isSplitVer(sub Subcell) bool {
 
 func topWall(absOrigin Pos, sub Subcell) Wall {
 	translated := absOrigin.Add(sub.RelativePos)
- 	start := Pos{
- 		X: translated.X,
+	start := Pos{
+		X: translated.X,
 		Y: translated.Y,
 	}
 	end := Pos{
@@ -59,7 +59,7 @@ func topWall(absOrigin Pos, sub Subcell) Wall {
 	}
 	return Wall{
 		Start: start,
-		End: end,
+		End:   end,
 	}
 }
 
@@ -75,6 +75,6 @@ func leftWall(absOrigin Pos, sub Subcell) Wall {
 	}
 	return Wall{
 		Start: start,
-		End: end,
+		End:   end,
 	}
 }

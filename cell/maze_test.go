@@ -30,24 +30,24 @@ func TestCellDiv2x2(t *testing.T) {
 func TestCellDivBasicProps(t *testing.T) {
 	tc := []cell.Dim{
 		{2, 2},
-		//{3, 3},
-		//{4, 4},
-		//{9, 9},
-		//{128, 128},
-		//{111, 11},
-		//{11, 111},
+		{3, 3},
+		{4, 4},
+		{9, 9},
+		{128, 128},
+		{111, 11},
+		{11, 111},
 	}
 	for _, dim := range tc {
 		t.Run(fmt.Sprintf("Dim(%v)", dim), func(t *testing.T) {
 			c := cell.NewDividedCell(dim.Width, dim.Height)
-			testBasicCellProps(t, c)
+			testSubcellSize(t, c)
 			testLeafCellsArea(t, c)
 			testNoDots(t, c)
 		})
 	}
 }
 
-func testBasicCellProps(t *testing.T, main cell.Cell) {
+func testSubcellSize(t *testing.T, main cell.Cell) {
 	cells := []cell.Cell{main}
 	for {
 		if len(cells) == 0 {
@@ -56,7 +56,6 @@ func testBasicCellProps(t *testing.T, main cell.Cell) {
 		c := cells[0]
 		cells = cells[1:]
 		subs := c.Subcells
-		assert.Equal(t, 2, len(subs), "Cell not divided into two: %v\n main:%v", c, main) // assume division 2
 		for _, sub := range subs {
 			rel := sub.RelativePos
 			assert.True(t, rel.X >= 0)

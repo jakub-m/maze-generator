@@ -1,6 +1,9 @@
 package cell
 
-import "math/rand"
+import (
+	"log"
+	"math/rand"
+)
 
 type Cell struct {
 	Dim      Dim
@@ -42,48 +45,60 @@ const (
 )
 
 func generateSubcells(width, height int) []Subcell {
-	switch split := randomSplitType(); split {
+	dim := Dim{Width: width, Height: height}
+	var possibleSplits []splitType
+	if (width > height) && canSplitVert(dim) {
+		possibleSplits = append(possibleSplits, splitVert)
+	} else if (height > width) && canSplitHor(dim) {
+		possibleSplits = append(possibleSplits, splitHor)
+	} else {
+		if canSplitHor(dim) {
+			possibleSplits = append(possibleSplits, splitHor)
+		}
+		if canSplitVert(dim) {
+			possibleSplits = append(possibleSplits, splitVert)
+		}
+	}
+	if len(possibleSplits) == 0 {
+		return []Subcell{}
+	}
+	i := rand.Intn(len(possibleSplits))
+	switch split := possibleSplits[i]; split {
 	case splitVert:
-		if width < 2 {
-			return []Subcell{}
-		} else {
-			d := randomSplitDim(width)
-			s1 := Subcell{
-				Cell:        NewDividedCell(d, height),
-				RelativePos: Pos{X: 0, Y: 0},
-			}
-			s2 := Subcell{
-				Cell:        NewDividedCell(width-d, height),
-				RelativePos: Pos{X: d, Y: 0},
-			}
-			return []Subcell{s1, s2}
+		d := randomSplitDim(width)
+		log.Printf("splitVert, w:%d, d:%d", width, d)
+		s1 := Subcell{
+			Cell:        NewDividedCell(d, height),
+			RelativePos: Pos{X: 0, Y: 0},
 		}
+		s2 := Subcell{
+			Cell:        NewDividedCell(width-d, height),
+			RelativePos: Pos{X: d, Y: 0},
+		}
+		return []Subcell{s1, s2}
 	case splitHor:
-		if height < 2 {
-			return []Subcell{}
-		} else {
-			d := randomSplitDim(height)
-			s1 := Subcell{
-				Cell:        NewDividedCell(width, d),
-				RelativePos: Pos{0, 0},
-			}
-			s2 := Subcell{
-				Cell:        NewDividedCell(width, height-d),
-				RelativePos: Pos{0, d},
-			}
-			return []Subcell{s1, s2}
+		d := randomSplitDim(height)
+		log.Printf("splitHor, h:%d, d:%d", height, d)
+		s1 := Subcell{
+			Cell:        NewDividedCell(width, d),
+			RelativePos: Pos{0, 0},
 		}
+		s2 := Subcell{
+			Cell:        NewDividedCell(width, height-d),
+			RelativePos: Pos{0, d},
+		}
+		return []Subcell{s1, s2}
 	default:
 		panic(split)
 	}
 }
 
-func randomSplitType() splitType {
-	if rand.Intn(2) == 0 {
-		return splitHor
-	} else {
-		return splitVert
-	}
+func canSplitHor(dim Dim) bool {
+	return dim.Height >= 2 && dim.Width >= 2
+}
+
+func canSplitVert(dim Dim) bool {
+	return dim.Height >= 2 && dim.Width >= 2
 }
 
 func randomSplitDim(width int) int {

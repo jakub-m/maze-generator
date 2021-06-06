@@ -8,30 +8,38 @@ import (
 )
 
 const scale = 50
+const newLine = "\n"
 
 const svgHeader = `<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">`
 
 func Format(c cell.Cell) ([]byte, error) {
 	var buf bytes.Buffer
-	_, err := buf.WriteString(svgHeader + "\n")
+	_, err := buf.WriteString(svgHeader + newLine)
 	if err != nil {
 		return nil, err
 	}
 	openTag := fmt.Sprintf(`<svg width="%d" height="%d" xmlns="http://www.w3.org/2000/svg">`, c.Dim.Width*scale, c.Dim.Height*scale)
-	_, err = buf.WriteString(openTag)
+	_, err = buf.WriteString(openTag + newLine)
 	if err != nil {
 		return nil, err
 	}
-	err = formatCell(c, cell.Pos{0, 0}, &buf)
-	if err != nil {
-		return nil, err
-	}
+	//err = formatCell(c, cell.Pos{0, 0}, &buf)
+	formatWalls(c, &buf)
 	_, err = buf.WriteString(`</svg>`)
 	if err != nil {
 		return nil, err
 	}
 	return buf.Bytes(), nil
+}
+
+func formatWalls(c cell.Cell, buf *bytes.Buffer) {
+	walls := cell.InternalWalls(c)
+	for _, w := range walls {
+		g := fmt.Sprintf(`<line x1="%d" y1="%d" x2="%d" y2="%d" stroke="black"/>`,
+			w.Start.X*scale, w.Start.Y*scale, w.End.X*scale, w.End.Y*scale)
+		buf.WriteString(g + newLine)
+	}
 }
 
 func formatCell(c cell.Cell, origin cell.Pos, buf *bytes.Buffer) error {

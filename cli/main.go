@@ -8,14 +8,15 @@ import (
 	"maze/cell"
 	"maze/svg"
 	"os"
-	"time"
 )
 
 func main() {
-	rand.Seed(time.Now().Unix())
+	//rand.Seed(time.Now().Unix())
+	rand.Seed(0)
 	log.SetOutput(os.Stderr)
 	log.Print("logger works!")
-	c := cell.NewDividedCell(9, 9)
+	n := 7
+	c := cell.NewDividedCell(n, n)
 	f, err := svg.Format(c)
 	if err != nil {
 		fmt.Println(err)
