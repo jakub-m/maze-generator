@@ -51,33 +51,74 @@ func isSplitVer(sub Subcell) bool {
 }
 
 func topWall(absOrigin Pos, sub Subcell) Wall {
+	width := sub.Cell.Dim.Width
+	p := sub.PassageOffset
 	parts := []Line{
 		{
-			Start: Pos{0, 0},
+			Start: Pos{
+				0,
+				0},
 			End: Pos{
-				X: sub.Cell.Dim.Width,
+				X: p,
+				Y: 0,
+			},
+		},
+		{
+			Start: Pos{
+				p + 1,
+				0},
+			End: Pos{
+				X: width,
 				Y: 0,
 			},
 		},
 	}
 	translation := absOrigin.Add(sub.RelativePos)
 	translateLines(translation, parts)
+	parts = filterInvisibleLines(parts)
 	return Wall{parts}
 }
 
 func leftWall(absOrigin Pos, sub Subcell) Wall {
+	height := sub.Cell.Dim.Height
+	p := sub.PassageOffset
 	parts := []Line{
 		{
-			Start: Pos{0, 0},
+			Start: Pos{
+				0,
+				0},
 			End: Pos{
 				X: 0,
-				Y: sub.Cell.Dim.Height,
+				Y: p,
+			},
+		},
+		{
+			Start: Pos{
+				0,
+				p + 1},
+			End: Pos{
+				X: 0,
+				Y: height,
 			},
 		},
 	}
 	translation := absOrigin.Add(sub.RelativePos)
 	translateLines(translation, parts)
+	parts = filterInvisibleLines(parts)
 	return Wall{parts}
+}
+
+func filterInvisibleLines(lines []Line) []Line {
+	var filtered []Line
+	for _, e := range lines {
+		if e.Start.X == e.End.X && e.Start.Y == e.End.Y {
+			continue
+		} else {
+			filtered = append(filtered, e)
+		}
+	}
+	return filtered
+
 }
 
 func translateLines(translation Pos, lines []Line) {
