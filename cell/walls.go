@@ -3,7 +3,7 @@ package cell
 import "fmt"
 
 type Wall struct {
-	Line Line
+	Parts []Line
 }
 
 type Line struct {
@@ -51,37 +51,40 @@ func isSplitVer(sub Subcell) bool {
 }
 
 func topWall(absOrigin Pos, sub Subcell) Wall {
-	translated := absOrigin.Add(sub.RelativePos)
-	start := Pos{
-		X: translated.X,
-		Y: translated.Y,
-	}
-	end := Pos{
-		X: translated.X + sub.Cell.Dim.Width,
-		Y: translated.Y,
-	}
-	return Wall{
-		Line{
-			Start: start,
-			End:   end,
+	parts := []Line{
+		{
+			Start: Pos{0, 0},
+			End: Pos{
+				X: sub.Cell.Dim.Width,
+				Y: 0,
+			},
 		},
 	}
+	translation := absOrigin.Add(sub.RelativePos)
+	translateLines(translation, parts)
+	return Wall{parts}
 }
 
 func leftWall(absOrigin Pos, sub Subcell) Wall {
-	translated := absOrigin.Add(sub.RelativePos)
-	start := Pos{
-		X: translated.X,
-		Y: translated.Y,
-	}
-	end := Pos{
-		X: translated.X,
-		Y: translated.Y + sub.Cell.Dim.Height,
-	}
-	return Wall{
-		Line{
-			Start: start,
-			End:   end,
+	parts := []Line{
+		{
+			Start: Pos{0, 0},
+			End: Pos{
+				X: 0,
+				Y: sub.Cell.Dim.Height,
+			},
 		},
+	}
+	translation := absOrigin.Add(sub.RelativePos)
+	translateLines(translation, parts)
+	return Wall{parts}
+}
+
+func translateLines(translation Pos, lines []Line) {
+	for i, l := range lines {
+		lines[i] = Line{
+			Start: l.Start.Add(translation),
+			End:   l.End.Add(translation),
+		}
 	}
 }
