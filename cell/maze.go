@@ -17,6 +17,10 @@ type Pos struct {
 	Y int
 }
 
+func (p Pos) Add(q Pos) Pos {
+	return Pos{X: p.X + q.X, Y: p.Y + q.Y}
+}
+
 type Dim struct {
 	Width  int
 	Height int
