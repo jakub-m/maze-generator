@@ -11,8 +11,9 @@ type Cell struct {
 }
 
 type Subcell struct {
-	Cell        Cell
-	RelativePos Pos
+	Cell          Cell
+	RelativePos   Pos
+	PassageOffset int
 }
 
 type Pos struct {
@@ -68,24 +69,28 @@ func generateSubcells(width, height int) []Subcell {
 		d := randomSplitDim(width)
 		log.Printf("splitVert, w:%d, d:%d", width, d)
 		s1 := Subcell{
-			Cell:        NewDividedCell(d, height),
-			RelativePos: Pos{X: 0, Y: 0},
+			Cell:          NewDividedCell(d, height),
+			RelativePos:   Pos{X: 0, Y: 0},
+			PassageOffset: randomPassageOffset(height),
 		}
 		s2 := Subcell{
-			Cell:        NewDividedCell(width-d, height),
-			RelativePos: Pos{X: d, Y: 0},
+			Cell:          NewDividedCell(width-d, height),
+			RelativePos:   Pos{X: d, Y: 0},
+			PassageOffset: randomPassageOffset(height),
 		}
 		return []Subcell{s1, s2}
 	case splitHor:
 		d := randomSplitDim(height)
 		log.Printf("splitHor, h:%d, d:%d", height, d)
 		s1 := Subcell{
-			Cell:        NewDividedCell(width, d),
-			RelativePos: Pos{0, 0},
+			Cell:          NewDividedCell(width, d),
+			RelativePos:   Pos{0, 0},
+			PassageOffset: randomPassageOffset(width),
 		}
 		s2 := Subcell{
-			Cell:        NewDividedCell(width, height-d),
-			RelativePos: Pos{0, d},
+			Cell:          NewDividedCell(width, height-d),
+			RelativePos:   Pos{0, d},
+			PassageOffset: randomPassageOffset(width),
 		}
 		return []Subcell{s1, s2}
 	default:
@@ -103,4 +108,8 @@ func canSplitVert(dim Dim) bool {
 
 func randomSplitDim(width int) int {
 	return 1 + rand.Intn(width-1)
+}
+
+func randomPassageOffset(d int) int {
+	return rand.Intn(d)
 }

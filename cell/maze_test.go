@@ -31,11 +31,8 @@ func TestCellDivBasicProps(t *testing.T) {
 	tc := []cell.Dim{
 		{2, 2},
 		{3, 3},
-		{4, 4},
-		{9, 9},
-		{128, 128},
+		{2, 13},
 		{111, 11},
-		{11, 111},
 	}
 	for _, dim := range tc {
 		t.Run(fmt.Sprintf("Dim(%v)", dim), func(t *testing.T) {
@@ -43,6 +40,7 @@ func TestCellDivBasicProps(t *testing.T) {
 			testSubcellSize(t, c)
 			testLeafCellsArea(t, c)
 			testNoDots(t, c)
+			testPassagesProperlyPlaced(t, c)
 		})
 	}
 }
@@ -77,27 +75,51 @@ func testLeafCellsArea(t *testing.T, main cell.Cell) {
 }
 
 func testNoDots(t *testing.T, c cell.Cell) {
-	iterAllCells(t, c, func(t *testing.T, c cell.Cell) {
+	iterAllCells(c, func(c cell.Cell) {
 		area := c.Dim.Width * c.Dim.Height
 		assert.NotEqual(t, 1, area, c)
 	})
 }
 
-func collectLeafCells(c cell.Cell) []cell.Cell {
-	if len(c.Subcells) == 0 {
-		return []cell.Cell{c}
-	} else {
-		leafs := []cell.Cell{}
+func testPassagesProperlyPlaced(t *testing.T, c cell.Cell) {
+	maxPassageOffset := -1
+	iterAllCells(c, func(c cell.Cell) {
 		for _, sub := range c.Subcells {
-			leafs = append(leafs, collectLeafCells(sub.Cell)...)
+			maxPassageOffset = max(maxPassageOffset, sub.PassageOffset)
+			if sub.RelativePos.X > 0 {
+				assert.GreaterOrEqual(t, sub.PassageOffset, 0)
+				assert.Less(t, sub.PassageOffset, c.Dim.Height)
+			} else if sub.RelativePos.Y > 0 {
+				assert.GreaterOrEqual(t, sub.PassageOffset, 0)
+				assert.Less(t, sub.PassageOffset, c.Dim.Width)
+			}
 		}
-		return leafs
+	})
+	// sanity check that there is a passage not at 0
+	assert.Greater(t, maxPassageOffset, 0)
+}
+
+func collectLeafCells(c cell.Cell) []cell.Cell {
+	var leafs []cell.Cell
+	iterAllCells(c, func(c cell.Cell) {
+		if len(c.Subcells) == 0 {
+			leafs = append(leafs, c)
+		}
+	})
+	return leafs
+}
+
+func iterAllCells(c cell.Cell, fn func(c cell.Cell)) {
+	fn(c)
+	for _, sub := range c.Subcells {
+		iterAllCells(sub.Cell, fn)
 	}
 }
 
-func iterAllCells(t *testing.T, c cell.Cell, fn func(t *testing.T, c cell.Cell)) {
-	fn(t, c)
-	for _, sub := range c.Subcells {
-		iterAllCells(t, sub.Cell, fn)
+func max(a, b int) int {
+	if a > b {
+		return a
+	} else {
+		return b
 	}
 }

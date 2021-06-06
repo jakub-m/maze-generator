@@ -17,7 +17,6 @@ func internalWallsRec(absOrigin Pos, c Cell) []Wall {
 	for _, sub := range c.Subcells {
 		if !isFirstSub(sub) {
 			if isSplitHor(sub) {
-				// consider only top wall
 				w := topWall(absOrigin, sub)
 				walls = append(walls, w)
 			} else if isSplitVer(sub) {
