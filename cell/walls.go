@@ -10,6 +10,24 @@ type Line struct {
 	Start, End Pos
 }
 
+func OutterWalls(mazeDim Dim) []Wall {
+	w := mazeDim.Width
+	h := mazeDim.Height
+	h1 := Wall{[]Line{{Pos{0, 0}, Pos{w, 0}}}}
+	h2 := Wall{[]Line{{Pos{0, h}, Pos{w, h}}}}
+	v1p := randomPassageOffset(h)
+	v1 := Wall{[]Line{
+		{Pos{0, 0}, Pos{0, v1p}},
+		{Pos{0, v1p+1}, Pos{0, h}},
+	}}
+	v2p := randomPassageOffset(h)
+	v2 := Wall{[]Line{
+		{Pos{w, 0}, Pos{w, v2p}},
+		{Pos{w, v2p+1}, Pos{w, h}},
+	}}
+	return []Wall{h1, h2, v1, v2}
+}
+
 // InternalWalls returns non-overlapping set of walls with absolute coordinates.
 func InternalWalls(c Cell) []Wall {
 	zero := Pos{0, 0}
