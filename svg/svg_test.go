@@ -16,7 +16,7 @@ func TestMain(m *testing.M) {
 
 func TestSvg(t *testing.T) {
 	c := cell.NewDividedCell(4, 4)
-	f, err := svg.Format(c, 50)
+	f, err := svg.Format(c, 50, 2)
 	assert.NoError(t, err)
 	s := string(f)
 	assert.Contains(t, s, "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>")

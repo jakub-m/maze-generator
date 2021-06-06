@@ -11,7 +11,7 @@ const newLine = "\n"
 const svgHeader = `<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">`
 
-func Format(c cell.Cell, scale int) ([]byte, error) {
+func Format(c cell.Cell, scale, strokeWidth int) ([]byte, error) {
 	var buf bytes.Buffer
 	_, err := buf.WriteString(svgHeader + newLine)
 	if err != nil {
@@ -22,7 +22,7 @@ func Format(c cell.Cell, scale int) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	formatWalls(c, scale, &buf)
+	formatWalls(c, scale, strokeWidth, &buf)
 	_, err = buf.WriteString(`</svg>`)
 	if err != nil {
 		return nil, err
@@ -30,15 +30,16 @@ func Format(c cell.Cell, scale int) ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
-func formatWalls(c cell.Cell, scale int, buf *bytes.Buffer) {
+func formatWalls(c cell.Cell, scale, strokeWidth int, buf *bytes.Buffer) {
 	walls := cell.InternalWalls(c)
 	for _, w := range walls {
 		for _, line := range w.Parts {
-			g := fmt.Sprintf(`<line x1="%d" y1="%d" x2="%d" y2="%d" stroke="black"/>`,
+			g := fmt.Sprintf(`<line x1="%d" y1="%d" x2="%d" y2="%d" stroke="black" stroke-width="%d"/>`,
 				line.Start.X*scale,
 				line.Start.Y*scale,
 				line.End.X*scale,
-				line.End.Y*scale)
+				line.End.Y*scale,
+				strokeWidth)
 			buf.WriteString(g + newLine)
 		}
 	}
