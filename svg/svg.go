@@ -18,13 +18,13 @@ func Format(c cell.Cell) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	openTag := fmt.Sprintf(`<svg width="%d" height="%d" xmlns="http://www.w3.org/2000/svg">`, c.Dim.Width * scale, c.Dim.Height * scale)
+	openTag := fmt.Sprintf(`<svg width="%d" height="%d" xmlns="http://www.w3.org/2000/svg">`, c.Dim.Width*scale, c.Dim.Height*scale)
 	_, err = buf.WriteString(openTag)
 	if err != nil {
 		return nil, err
 	}
 	err = formatCell(c, cell.Pos{0, 0}, &buf)
-	if err != nil  {
+	if err != nil {
 		return nil, err
 	}
 	_, err = buf.WriteString(`</svg>`)

@@ -10,4 +10,3 @@ func TestMain(m *testing.M) {
 	rand.Seed(0)
 	os.Exit(m.Run())
 }
-

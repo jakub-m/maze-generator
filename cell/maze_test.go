@@ -3,8 +3,8 @@ package cell_test
 import (
 	"fmt"
 	"github.com/stretchr/testify/assert"
-	"testing"
 	"maze/cell"
+	"testing"
 )
 
 func TestSmallCell(t *testing.T) {
