@@ -3,6 +3,10 @@ package cell
 import "fmt"
 
 type Wall struct {
+	Line Line
+}
+
+type Line struct {
 	Start, End Pos
 }
 
@@ -57,8 +61,10 @@ func topWall(absOrigin Pos, sub Subcell) Wall {
 		Y: translated.Y,
 	}
 	return Wall{
-		Start: start,
-		End:   end,
+		Line{
+			Start: start,
+			End:   end,
+		},
 	}
 }
 
@@ -73,7 +79,9 @@ func leftWall(absOrigin Pos, sub Subcell) Wall {
 		Y: translated.Y + sub.Cell.Dim.Height,
 	}
 	return Wall{
-		Start: start,
-		End:   end,
+		Line{
+			Start: start,
+			End:   end,
+		},
 	}
 }

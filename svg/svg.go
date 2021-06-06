@@ -33,7 +33,11 @@ func Format(c cell.Cell, scale int) ([]byte, error) {
 func formatWalls(c cell.Cell, scale int, buf *bytes.Buffer) {
 	walls := cell.InternalWalls(c)
 	for _, w := range walls {
-		g := fmt.Sprintf(`<line x1="%d" y1="%d" x2="%d" y2="%d" stroke="black"/>`, w.Start.X*scale, w.Start.Y*scale, w.End.X*scale, w.End.Y*scale)
+		g := fmt.Sprintf(`<line x1="%d" y1="%d" x2="%d" y2="%d" stroke="black"/>`,
+			w.Line.Start.X*scale,
+			w.Line.Start.Y*scale,
+			w.Line.End.X*scale,
+			w.Line.End.Y*scale)
 		buf.WriteString(g + newLine)
 	}
 }
