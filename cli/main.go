@@ -10,6 +10,8 @@ import (
 	"os"
 )
 
+const scale = 50
+
 func main() {
 	//rand.Seed(time.Now().Unix())
 	rand.Seed(0)
@@ -17,7 +19,7 @@ func main() {
 	log.Print("logger works!")
 	n := 7
 	c := cell.NewDividedCell(n, n)
-	f, err := svg.Format(c)
+	f, err := svg.Format(c, scale)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
