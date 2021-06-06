@@ -1,20 +1,14 @@
-package cell
+package cell_test
 
 import (
 	"fmt"
 	"github.com/stretchr/testify/assert"
-	"math/rand"
-	"os"
 	"testing"
+	"maze/cell"
 )
 
-func TestMain(m *testing.M) {
-	rand.Seed(0)
-	os.Exit(m.Run())
-}
-
 func TestSmallCell(t *testing.T) {
-	ch := NewDividedCell(2, 1)
+	ch := cell.NewDividedCell(2, 1)
 	dim := ch.Dim
 	assert.Equal(t, 2, dim.Width)
 	assert.Equal(t, 1, dim.Height)
@@ -22,7 +16,7 @@ func TestSmallCell(t *testing.T) {
 }
 
 func TestCellDiv2x2(t *testing.T) {
-	ch := NewDividedCell(2, 2)
+	ch := cell.NewDividedCell(2, 2)
 	dim := ch.Dim
 	assert.Equal(t, 2, dim.Width)
 	assert.Equal(t, 2, dim.Height)
@@ -34,7 +28,7 @@ func TestCellDiv2x2(t *testing.T) {
 }
 
 func TestCellDivBasicProps(t *testing.T) {
-	tc := []Dim{
+	tc := []cell.Dim{
 		{2, 2},
 		{3, 3},
 		{4, 4},
@@ -45,15 +39,15 @@ func TestCellDivBasicProps(t *testing.T) {
 	}
 	for _, dim := range tc {
 		t.Run(fmt.Sprintf("Dim(%v)", dim), func(t *testing.T) {
-			cell := NewDividedCell(dim.Width, dim.Height)
+			cell := cell.NewDividedCell(dim.Width, dim.Height)
 			testBasicCellProps(t, cell)
 			testLeafCellsArea(t, cell)
 		})
 	}
 }
 
-func testBasicCellProps(t *testing.T, main Cell) {
-	cells := []Cell{main}
+func testBasicCellProps(t *testing.T, main cell.Cell) {
+	cells := []cell.Cell{main}
 	for {
 		if len(cells) == 0 {
 			break
@@ -72,7 +66,7 @@ func testBasicCellProps(t *testing.T, main Cell) {
 	}
 }
 
-func testLeafCellsArea(t *testing.T, main Cell) {
+func testLeafCellsArea(t *testing.T, main cell.Cell) {
 	leafs := collectLeafCells(main)
 	leafArea := 0
 	for _, leaf := range leafs {
@@ -82,11 +76,11 @@ func testLeafCellsArea(t *testing.T, main Cell) {
 	assert.Equal(t, mainArea, leafArea)
 }
 
-func collectLeafCells(c Cell) []Cell {
+func collectLeafCells(c cell.Cell) []cell.Cell {
 	if len(c.Subcells) == 0 {
-		return []Cell{c}
+		return []cell.Cell{c}
 	} else {
-		leafs := []Cell{}
+		leafs := []cell.Cell{}
 		for _, sub := range c.Subcells {
 			leafs = append(leafs, collectLeafCells(sub.Cell)...)
 		}
