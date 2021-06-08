@@ -6,57 +6,59 @@ import (
 	"io/ioutil"
 	"log"
 	"math/rand"
-	"maze/maze"
+	"maze/cell"
 	"maze/svg"
 	"os"
 	"time"
 )
 
-var outfname string
-var scale int
-var seed int64
-var size int
-var strokeWidth int
+type params struct {
+	outfname    string
+	scale       int
+	seed        int64
+	size        int
+	strokeWidth int
+	verbose     bool
+}
 
-func init() {
-	flagScale := flag.Int("scale", 50, "scale")
-	flagSeed := flag.Int64("seed", time.Now().Unix(), "random seed")
-	flagSize := flag.Int("size", 6, "size")
-	flagStroke := flag.Int("stroke", 2, "stroke width")
-	flagOutfile := flag.String("out", "-", "output filename or \"-\"")
-	flagVerbose := flag.Bool("verbose", false, "verbose mode")
-	flag.Parse()
-
-	outfname = *flagOutfile
-	scale = *flagScale
-	seed = *flagSeed
-	size = *flagSize
-	strokeWidth = *flagStroke
-	if *flagVerbose {
+func main() {
+	p := getParams()
+	if p.verbose {
 		log.SetOutput(os.Stderr)
 	} else {
 		log.SetFlags(0)
 		log.SetOutput(ioutil.Discard)
 	}
-}
-
-func main() {
-	log.Println("scale", scale)
-	log.Println("seed", seed)
-	log.Println("size", size)
-	log.Println("stroke", strokeWidth)
-	log.Println("out", outfname)
-	rand.Seed(seed)
-	m := maze.NewMaze(size)
-	f, err := svg.FormatMaze(m, scale, strokeWidth)
+	log.Printf("params %+v", p)
+	rand.Seed(p.seed)
+	m := cell.NewMaze(p.size)
+	f, err := svg.FormatMaze(m, p.scale, p.strokeWidth)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-	if outfname == "-" {
+	if p.outfname == "-" {
 		os.Stdout.Write(f)
 	} else {
-		ioutil.WriteFile(outfname, f, 0644)
+		ioutil.WriteFile(p.outfname, f, 0644)
 	}
 	log.Println("done")
+}
+
+func getParams() params {
+	scale := flag.Int("scale", 50, "scale")
+	seed := flag.Int64("seed", time.Now().Unix(), "random seed")
+	size := flag.Int("size", 6, "size")
+	strokeWidth := flag.Int("stroke", 2, "stroke width")
+	outfname := flag.String("out", "-", "output filename or \"-\"")
+	verbose := flag.Bool("verbose", false, "verbose mode")
+	flag.Parse()
+	return params{
+		scale:       *scale,
+		seed:        *seed,
+		size:        *size,
+		strokeWidth: *strokeWidth,
+		outfname:    *outfname,
+		verbose:     *verbose,
+	}
 }
