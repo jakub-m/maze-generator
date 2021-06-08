@@ -15,7 +15,7 @@ func TestMain(m *testing.M) {
 }
 
 func TestSvg(t *testing.T) {
-	m := cell.NewMaze(4)
+	m := cell.NewMaze(4, 4)
 	f, err := svg.FormatMaze(m, 50, 2)
 	assert.NoError(t, err)
 	s := string(f)

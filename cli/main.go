@@ -13,12 +13,13 @@ import (
 )
 
 type params struct {
+	height      int
 	outfname    string
 	scale       int
 	seed        int64
-	size        int
 	strokeWidth int
 	verbose     bool
+	width       int
 }
 
 func main() {
@@ -31,7 +32,7 @@ func main() {
 	}
 	log.Printf("params %+v", p)
 	rand.Seed(p.seed)
-	m := cell.NewMaze(p.size)
+	m := cell.NewMaze(p.width, p.height)
 	f, err := svg.FormatMaze(m, p.scale, p.strokeWidth)
 	if err != nil {
 		fmt.Println(err)
@@ -46,19 +47,21 @@ func main() {
 }
 
 func getParams() params {
-	scale := flag.Int("scale", 50, "scale")
-	seed := flag.Int64("seed", time.Now().Unix(), "random seed")
-	size := flag.Int("size", 6, "size")
-	strokeWidth := flag.Int("stroke", 2, "stroke width")
-	outfname := flag.String("out", "-", "output filename or \"-\"")
-	verbose := flag.Bool("verbose", false, "verbose mode")
+	height := flag.Int("h", 6, "height")
+	outfname := flag.String("o", "-", "output filename or \"-\"")
+	scale := flag.Int("s", 50, "scale")
+	seed := flag.Int64("r", time.Now().Unix(), "random seed")
+	strokeWidth := flag.Int("t", 2, "stroke width")
+	verbose := flag.Bool("v", false, "verbose mode")
+	width := flag.Int("w", 6, "width")
 	flag.Parse()
 	return params{
+		height:      *height,
+		outfname:    *outfname,
 		scale:       *scale,
 		seed:        *seed,
-		size:        *size,
 		strokeWidth: *strokeWidth,
-		outfname:    *outfname,
 		verbose:     *verbose,
+		width:       *width,
 	}
 }

@@ -7,14 +7,14 @@ type Maze struct {
 	OutterWalls []Wall
 }
 
-func NewMaze(size int) Maze {
-	dim := Dim{size, size}
-	c := NewDividedCell(size, size)
+func NewMaze(width, height int) Maze {
+	dim := Dim{width, height}
+	c := NewDividedCell(width, height)
 	outter := OutterWalls(dim)
 	return Maze{
 		RootCell:    c,
-		Height:      size,
-		Width:       size,
+		Height:      height,
+		Width:       width,
 		OutterWalls: outter,
 	}
 }
