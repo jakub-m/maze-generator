@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="504" height="504" xmlns="http://www.w3.org/2000/svg">
+<line x1="2" y1="52" x2="152" y2="52" stroke="black" stroke-width="2"/>
+<line x1="202" y1="52" x2="502" y2="52" stroke="black" stroke-width="2"/>
+<line x1="52" y1="52" x2="52" y2="402" stroke="black" stroke-width="2"/>
+<line x1="102" y1="102" x2="152" y2="102" stroke="black" stroke-width="2"/>
+<line x1="102" y1="152" x2="152" y2="152" stroke="black" stroke-width="2"/>
+<line x1="52" y1="202" x2="102" y2="202" stroke="black" stroke-width="2"/>
+<line x1="52" y1="252" x2="102" y2="252" stroke="black" stroke-width="2"/>
+<line x1="102" y1="302" x2="102" y2="352" stroke="black" stroke-width="2"/>
+<line x1="102" y1="352" x2="152" y2="352" stroke="black" stroke-width="2"/>
+<line x1="152" y1="52" x2="152" y2="152" stroke="black" stroke-width="2"/>
+<line x1="152" y1="202" x2="152" y2="402" stroke="black" stroke-width="2"/>
+<line x1="202" y1="102" x2="252" y2="102" stroke="black" stroke-width="2"/>
+<line x1="252" y1="102" x2="252" y2="152" stroke="black" stroke-width="2"/>
+<line x1="302" y1="102" x2="302" y2="152" stroke="black" stroke-width="2"/>
+<line x1="352" y1="102" x2="352" y2="152" stroke="black" stroke-width="2"/>
+<line x1="402" y1="102" x2="402" y2="152" stroke="black" stroke-width="2"/>
+<line x1="152" y1="152" x2="352" y2="152" stroke="black" stroke-width="2"/>
+<line x1="402" y1="152" x2="452" y2="152" stroke="black" stroke-width="2"/>
+<line x1="202" y1="202" x2="202" y2="252" stroke="black" stroke-width="2"/>
+<line x1="252" y1="152" x2="252" y2="202" stroke="black" stroke-width="2"/>
+<line x1="152" y1="252" x2="252" y2="252" stroke="black" stroke-width="2"/>
+<line x1="202" y1="302" x2="202" y2="352" stroke="black" stroke-width="2"/>
+<line x1="202" y1="302" x2="252" y2="302" stroke="black" stroke-width="2"/>
+<line x1="302" y1="152" x2="302" y2="252" stroke="black" stroke-width="2"/>
+<line x1="302" y1="302" x2="302" y2="352" stroke="black" stroke-width="2"/>
+<line x1="202" y1="352" x2="352" y2="352" stroke="black" stroke-width="2"/>
+<line x1="352" y1="152" x2="352" y2="252" stroke="black" stroke-width="2"/>
+<line x1="352" y1="302" x2="352" y2="402" stroke="black" stroke-width="2"/>
+<line x1="402" y1="202" x2="452" y2="202" stroke="black" stroke-width="2"/>
+<line x1="352" y1="252" x2="402" y2="252" stroke="black" stroke-width="2"/>
+<line x1="402" y1="302" x2="452" y2="302" stroke="black" stroke-width="2"/>
+<line x1="402" y1="302" x2="402" y2="352" stroke="black" stroke-width="2"/>
+<line x1="52" y1="402" x2="402" y2="402" stroke="black" stroke-width="2"/>
+<line x1="2" y1="452" x2="152" y2="452" stroke="black" stroke-width="2"/>
+<line x1="202" y1="452" x2="452" y2="452" stroke="black" stroke-width="2"/>
+<line x1="452" y1="52" x2="452" y2="152" stroke="black" stroke-width="2"/>
+<line x1="452" y1="202" x2="452" y2="502" stroke="black" stroke-width="2"/>
+<line x1="2" y1="2" x2="502" y2="2" stroke="black" stroke-width="2"/>
+<line x1="2" y1="502" x2="502" y2="502" stroke="black" stroke-width="2"/>
+<line x1="2" y1="2" x2="2" y2="352" stroke="black" stroke-width="2"/>
+<line x1="2" y1="402" x2="2" y2="502" stroke="black" stroke-width="2"/>
+<line x1="502" y1="2" x2="502" y2="402" stroke="black" stroke-width="2"/>
+<line x1="502" y1="452" x2="502" y2="502" stroke="black" stroke-width="2"/>
+</svg>
