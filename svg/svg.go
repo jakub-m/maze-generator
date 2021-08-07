@@ -46,28 +46,42 @@ func forEachWall(m *mazelib.Maze, fn func(w wall)) {
 			cRef := mazelib.Cell{X: ix, Y: iy}
 			cEast := mazelib.Cell{X: ix + 1, Y: iy}
 			if !m.HasPassage(cRef, cEast) {
-				fn(wall{
+				w := wall{
 					x0: cEast.X,
 					y0: cEast.Y,
 					x1: cEast.X,
 					y1: cEast.Y + 1,
-				})
+				}
+				if wallDisplayable(m, w) {
+					fn(w)
+				}
 			} else {
 				log.Printf("has passage: %s -> %s", cRef, cEast)
 			}
 			cSouth := mazelib.Cell{X: ix, Y: iy + 1}
 			if !m.HasPassage(cRef, cSouth) {
-				fn(wall{
+				w := wall{
 					x0: cSouth.X,
 					y0: cSouth.Y,
 					x1: cSouth.X + 1,
 					y1: cSouth.Y,
-				})
+				}
+				if wallDisplayable(m, w) {
+					fn(w)
+				}
 			} else {
 				log.Printf("has passage: %s -> %s", cRef, cSouth)
 			}
 		}
 	}
+}
+
+func wallDisplayable(m *mazelib.Maze, w wall) bool {
+	return true &&
+		0 <= w.x0 && w.x0 <= m.Width &&
+		0 <= w.x1 && w.x1 <= m.Width &&
+		0 <= w.y0 && w.y0 <= m.Height &&
+		0 <= w.y1 && w.y1 <= m.Height
 }
 
 type wall struct{ x0, y0, x1, y1 int }
