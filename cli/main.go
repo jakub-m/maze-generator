@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"log"
 	"math/rand"
-	"maze/cell"
+	"maze/mazelib"
 	"maze/svg"
 	"os"
 	"time"
@@ -32,7 +32,11 @@ func main() {
 	}
 	log.Printf("params %+v", p)
 	rand.Seed(p.seed)
-	m := cell.NewMaze(p.width, p.height)
+	m, err := mazelib.NewMaze(p.width, p.height)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Println("ok")
 	f, err := svg.FormatMaze(m, p.scale, p.strokeWidth)
 	if err != nil {
 		fmt.Println(err)

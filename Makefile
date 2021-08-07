@@ -3,7 +3,9 @@ bin = maze
 
 default: test fmt run
 
-build: $(gofiles)
+build: $(bin)
+
+$(bin): $(gofiles)
 	go build -o $(bin) cli/main.go
 
 test: $(gofiles)
@@ -13,7 +15,7 @@ fmt: $(gofiles)
 	go fmt ./...
 
 run: $(bin)
-	./$(bin) -v -h 6 -w 6 -o tmp.svg
+	./$(bin) -r 0 -v -h 6 -w 6 -s 10 -o tmp.svg
 
 generate-examples: $(bin)
 	mkdir -p examples
