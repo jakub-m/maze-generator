@@ -24,6 +24,7 @@ func NewMaze(width, height int) (*Maze, error) {
 	for len(trace) > 0 {
 		log.Printf("trace len: %d, visited %d, passages: %d", len(trace), len(m.visited), len(m.passages)/2)
 		current := trace[len(trace)-1]
+		log.Printf("trace: %v", trace)
 		m.visited.mark(current)
 		candidates := m.unvisitedNeighbours(current)
 		if next, ok := chooseCell(candidates); ok {
@@ -80,22 +81,9 @@ func (m *Maze) unvisitedNeighbours(c Cell) []Cell {
 	return unvisited
 }
 
-func (m *Maze) ForEachWall(fn func(a, b Pos)) {
-	for ix := 0; ix < m.Width+1; ix++ {
-		for iy := 0; iy < m.Height+1; iy++ {
-			cRef := Cell{X: ix, Y: iy}
-
-			cEast := Cell{X: ix + 1, Y: iy}
-			if !m.passages.hasPassage(cRef, cEast) {
-				fn(Pos(cRef), Pos(cEast))
-			}
-
-			cSouth := Cell{X: ix, Y: iy + 1}
-			if !m.passages.hasPassage(cRef, cSouth) {
-				fn(Pos(cRef), Pos(cSouth))
-			}
-		}
-	}
+func (m *Maze) HasPassage(a, b Cell) bool {
+	_, ok := m.passages[newCellPair(a, b)]
+	return ok
 }
 
 func chooseCell(cells []Cell) (chosen Cell, ok bool) {
@@ -114,21 +102,16 @@ func (v visitedMap) mark(c Cell) {
 type passageMap map[cellPair]bool
 
 func (p passageMap) put(a, b Cell) (ok bool) {
-	pair1 := cellPair{a, b}
-	pair2 := cellPair{b, a}
-	if _, ok := p[pair1]; ok {
+	pair := newCellPair(a, b)
+	if _, ok := p[pair]; ok {
 		return false
 	}
-	if _, ok := p[pair2]; ok {
-		return false
-	}
-	p[pair1] = true
-	p[pair2] = true
+	p[pair] = true
 	return true
 }
 
 func (p passageMap) hasPassage(a, b Cell) bool {
-	_, ok := p[cellPair{a, b}]
+	_, ok := p[newCellPair(a, b)]
 	return ok
 }
 
@@ -136,14 +119,24 @@ type cellPair struct {
 	a, b Cell
 }
 
-type Cell Pos
-
-func (c Cell) String() string {
-	return fmt.Sprintf("[%d, %d]", c.X, c.Y)
+func newCellPair(a, b Cell) cellPair {
+	if a.X < b.X {
+		return cellPair{a, b}
+	}
+	if b.X < a.X {
+		return cellPair{b, a}
+	}
+	if a.Y < b.Y {
+		return cellPair{a, b}
+	}
+	if b.Y < a.Y {
+		return cellPair{b, a}
+	}
+	return cellPair{a, b}
 }
 
-type Pos struct{ X, Y int }
+type Cell struct{ X, Y int }
 
-func (c Pos) String() string {
+func (c Cell) String() string {
 	return fmt.Sprintf("[%d, %d]", c.X, c.Y)
 }

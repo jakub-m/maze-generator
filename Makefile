@@ -15,7 +15,7 @@ fmt: $(gofiles)
 	go fmt ./...
 
 run: $(bin)
-	./$(bin) -r 0 -v -h 6 -w 6 -s 10 -o tmp.svg
+	./$(bin) -r 0 -v -h 8 -w 8 -s 20 -o tmp.svg
 
 generate-examples: $(bin)
 	mkdir -p examples
